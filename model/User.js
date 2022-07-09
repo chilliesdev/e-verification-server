@@ -5,11 +5,27 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  firstname: {
+  name: {
     type: String,
     require: true,
   },
-  lastname: {
+  dataOfBirth: {
+    type: Date,
+    require: true,
+  },
+  educationLevel: {
+    type: String,
+    require: true,
+  },
+  postion: {
+    type: String,
+    require: true,
+  },
+  department: {
+    type: String,
+    require: true,
+  },
+  staffNo: {
     type: String,
     require: true,
   },

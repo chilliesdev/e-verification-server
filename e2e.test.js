@@ -12,12 +12,6 @@ beforeAll(async () => {
   await User.deleteMany({});
 });
 
-describe("say Hello World", () => {
-  it("Hello", async () => {
-    await spec().get("/").expectStatus(200);
-  });
-});
-
 describe("User Auth", () => {
   it("Register", async () => {
     await spec()
@@ -25,8 +19,12 @@ describe("User Auth", () => {
       .withBody({
         email: "email@email.com",
         password: "password",
-        firstname: "firstname",
-        lastname: "lastname",
+        name: "firstname lastname",
+        dataOfBirth: new Date("03/02/1999"),
+        educationLevel: "BSc",
+        position: "Position 1",
+        department: "Department 1",
+        staffNo: "Staff 1",
       })
       .expectStatus(201);
   });
@@ -39,7 +37,59 @@ describe("User Auth", () => {
         password: "password",
       })
       .expectStatus(200)
-      .stores("userToken", "accessToken")
-      .inspect();
+      .stores("userToken", "accessToken");
+  });
+});
+
+describe("User CRUD", () => {
+  it("Create", async () => {
+    await spec()
+      .post("/user")
+      .withBody({
+        email: "email1@email.com",
+        password: "password",
+        name: "firstname lastname",
+        dataOfBirth: new Date("03/02/1999"),
+        educationLevel: "BSc",
+        position: "Position 1",
+        department: "Department 1",
+        staffNo: "Staff 2",
+      })
+      .expectStatus(201)
+      .stores("userId", "_id");
+  });
+
+  it("Upate", async () => {
+    await spec()
+      .patch("/user")
+      .withBody({
+        id: "$S{userId}",
+        email: "email2@email.com",
+        password: "password",
+        name: "firstname1 lastname1",
+        dataOfBirth: new Date("03/02/1999"),
+        educationLevel: "BSc",
+        position: "Position 1",
+        department: "Department 1",
+        staffNo: "Staff 3",
+      })
+      .expectStatus(200);
+  });
+
+  it("Get All", async () => {
+    await spec().get("/user").expectStatus(200);
+  });
+
+  it("Get", async () => {
+    await spec().get("/user/$S{userId}").expectStatus(200);
+  });
+
+  it("Delete", async () => {
+    await spec()
+      .delete("/user")
+      .withBody({
+        id: "$S{userId}",
+      })
+      .expectStatus(200);
   });
 });
