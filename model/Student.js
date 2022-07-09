@@ -1,19 +1,27 @@
 const mongoose = require("mongoose");
 
 const studentSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-  },
-  firstname: {
+  name: {
     type: String,
     require: true,
   },
-  lastname: {
+  matricNumber: {
     type: String,
     require: true,
   },
-  matricnumber: {
+  dataOfBirth: {
+    type: Date,
+    require: true,
+  },
+  level: {
+    type: String,
+    require: true,
+  },
+  faculty: {
+    type: String,
+    require: true,
+  },
+  department: {
     type: String,
     require: true,
   },
