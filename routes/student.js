@@ -18,4 +18,6 @@ router
 
 router.route("/:id").get(getStudent);
 
+router.route("/search").get(getStudent);
+
 module.exports = router;

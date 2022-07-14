@@ -92,6 +92,47 @@ const deleteStudent = async (req, res) => {
   }
 };
 
+const searchStudent = async (req, res) => {
+  try {
+    if (!req?.query?.keyword || req.query.keyword.length < 1)
+      return res.status(400).json({
+        message: "Keyword is required",
+      });
+
+    console.log(req.query);
+
+    const result = await Student.find({
+      $or: [
+        { name: { $regex: `.*${req.query.keyword}.*` } },
+        { matricNumber: { $regex: `.*${req.query.keyword}.*` } },
+      ],
+    }).limit(10);
+
+    res.json(result);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const verifyStudent = async (req, res) => {
+  try {
+    if (!req?.body?.matricNumber) {
+      return res.status(400).json({
+        message: "matric number is required",
+      });
+    }
+
+    const result = await Student.findOne({
+      matricNumber: req.body.matricNumber,
+    });
+    if (!result) return res.status(400).json({ message: "student not found" });
+
+    res.json(result);
+  } catch (err) {
+    console.log(result);
+  }
+};
+
 const validate = (method) => {
   switch (method) {
     case "createStudent": {
@@ -125,5 +166,7 @@ module.exports = {
   createStudent,
   editStudent,
   deleteStudent,
+  searchStudent,
+  verifyStudent,
   validate,
 };
