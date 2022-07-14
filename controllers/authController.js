@@ -53,7 +53,7 @@ const login = async (req, res) => {
     if (!user) return res.sendStatus(401);
 
     // Encrypt password
-    const match = bcrypt.compare(password, user.hash);
+    const match = await bcrypt.compare(password, user.hash);
     if (!match) return res.sendStatus(401);
 
     // remove password
