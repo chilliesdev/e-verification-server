@@ -5,19 +5,23 @@ const connectDB = require("./config/connectDb");
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const verifyJwt = require("./middleware/verifyJwt");
+const corsOptions = require("./config/corsOptions");
 
 const PORT = process.env.PORT || 8000;
 
 connectDB();
 
 app.use(bodyParser.json());
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
 app.use("/auth", require("./routes/auth"));
+app.use("/verify", require("./routes/verify"));
 
 app.use(verifyJwt);
 app.use("/user", require("./routes/user"));
