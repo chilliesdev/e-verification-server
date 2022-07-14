@@ -149,7 +149,27 @@ describe("Student CRUD", () => {
     await spec()
       .get("/student/$S{studentId}")
       .withHeaders("Authorization", "Bearer $S{userToken}")
+      .expectStatus(200)
+      .stores("studentMatNo", "matricNumber");
+  });
+
+  it("Verify", async () => {
+    await spec()
+      .post("/verify")
+      .withHeaders("Authorization", "Bearer $S{userToken}")
+      .withBody({
+        matricNumber: "$(studentMatNo)",
+      })
       .expectStatus(200);
+  });
+
+  it("Search", async () => {
+    await spec()
+      .get("/student/query")
+      .withHeaders("Authorization", "Bearer $S{userToken}")
+      .withQueryParams("keyword", "first")
+      .expectStatus(200)
+      .inspect();
   });
 
   it("Delete", async () => {
