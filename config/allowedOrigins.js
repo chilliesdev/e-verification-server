@@ -1,3 +1,3 @@
-const allowedOrigins = ["http://localhost:3000", "https://www.google.com"];
+const allowedOrigins = [process.env.CLIENT_URI];
 
 module.exports = allowedOrigins;
